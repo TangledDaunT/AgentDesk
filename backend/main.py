@@ -19,11 +19,22 @@ from models import (
     EvalRun,
     PlanRequest,
 )
-from agents.planner import PlannerAgent
-from agents.research import ResearchAgent
-from agents.code import CodeAgent
-from agents.data import DataAgent
 from memory.qdrant_store import QdrantMemoryStore
+
+settings = get_settings()
+
+# Import agents (real or mock based on settings)
+if settings.mock_mode:
+    print("[MOCK MODE] Using mock agents (no API calls)")
+    from agents.mock import MockPlannerAgent as PlannerAgent
+    from agents.mock import MockResearchAgent as ResearchAgent
+    from agents.mock import MockCodeAgent as CodeAgent
+    from agents.mock import MockDataAgent as DataAgent
+else:
+    from agents.planner import PlannerAgent
+    from agents.research import ResearchAgent
+    from agents.code import CodeAgent
+    from agents.data import DataAgent
 from websocket.manager import (
     get_websocket_manager,
     broadcast_task_created,
@@ -31,8 +42,6 @@ from websocket.manager import (
 )
 from eval.harness import EvalHarness, BENCHMARKS
 from eval.benchmarks import get_expected_agent
-
-settings = get_settings()
 
 # Global state
 agents: dict = {}
