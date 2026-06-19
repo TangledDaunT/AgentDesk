@@ -7,8 +7,11 @@ from functools import lru_cache
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
+    # Mock mode (for testing without API keys)
+    mock_mode: bool = False
+
     # LLM
-    anthropic_api_key: str
+    anthropic_api_key: str = ""
 
     # Services
     redis_url: str = "redis://localhost:6379/0"
