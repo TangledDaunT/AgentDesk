@@ -9,9 +9,34 @@ A self-hosted multi-agent orchestration platform with MCP tool-calling and persi
 - Python 3.11+
 - Node.js 20+
 - Docker & Docker Compose
-- Anthropic API key
+- Anthropic API key (optional - mock mode available)
 
-### 1. Clone and setup
+### Quick Start (Mock Mode - No API Key Required)
+
+Run the full stack without any API keys:
+
+```bash
+git clone https://github.com/TangledDaunT/AgentDesk.git
+cd AgentDesk
+
+# Start infrastructure
+docker-compose up -d redis qdrant
+
+# Setup and start backend
+cd backend
+pip install -r requirements.txt
+cp .env.example .env  # Already configured for mock mode
+uvicorn main:app --port 8000 &
+
+# Setup and start frontend
+cd ../frontend
+npm install
+npm run dev
+```
+
+Access the app at http://localhost:5173
+
+### Full Setup (With Real LLM)
 
 ```bash
 git clone https://github.com/TangledDaunT/AgentDesk.git
@@ -20,7 +45,7 @@ cd AgentDesk
 # Setup backend
 cd backend
 cp .env.example .env
-# Edit .env and add: ANTHROPIC_API_KEY=your_key_here
+# Edit .env: set MOCK_MODE=false and add ANTHROPIC_API_KEY=your_key_here
 
 # Install Python dependencies
 pip install -r requirements.txt
